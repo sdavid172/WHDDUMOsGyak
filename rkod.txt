@@ -1,0 +1,76 @@
+
+x <- rnorm(100)
+y <- rnorm(100)
+n <- length(x)
+
+
+LinReg <- function(X,Y) {
+
+plot(X,Y)
+a <- calcA(X,Y)
+b <- calcB(X,Y)
+lines(X, a * X + b, type = "l", lty = 1, col = "blue")
+}
+
+
+Summ <- function(X) {
+
+sum <- 0
+n <- length(X)
+
+for (i in 1:n) {
+
+sum <- sum + X[i]
+}
+return(sum)
+}
+
+Szorzat <- function(X,Y) {
+
+sum <- 0
+n <- length(X)
+
+for (i in 1:n) {
+
+sum <- sum + X[i] * Y[i]
+}
+return(sum)
+}
+
+Summnegyzet <- function(X) {
+sum <- 0
+n <- length(X)
+
+for (i in 1:n) {
+
+sum <- sum + X[i]^2
+}
+return(sum)
+}
+
+calcA <- function(X,Y) {
+
+szummX <- Summ(X)
+szummY <- Summ(Y)
+szummXY <- Szorzat(X,Y)
+szummNegyz <- Summnegyzet(X)
+
+elso <- (szummXY * n) - (szummY * (-szummX))
+masodik <- (szummNegyz * n) - (szummX * (-szummX))
+return(elso/masodik)
+}
+
+calcB <- function(X,Y) {
+
+szummX <- Summ(X)
+szummY <- Summ(Y)
+szummXY <- Szorzat(X,Y)
+szummNegyz <- Summnegyzet(X)
+
+elso <- (szummX * szummY) - (szummX * szummXY)
+masodik <- (szummNegyz * n) - (szummX * (-szummX))
+return(elso/masodik)
+}
+
+X <- c(2,6,8,10,12,14,16)
+Y <- c(3,4,7,9,11,13,15)
