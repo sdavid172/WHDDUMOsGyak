@@ -1,0 +1,75 @@
+Summ <- function(X, n, Y) {
+  szum <- 0
+  
+  if (missing(Y)) {
+    for (i in 1:length(X)) {
+      szum <- szum + X[i]^n
+    }
+  } else {
+    for (i in 1:length(X)) {
+      szum <- szum + X[i]^n * Y[i]
+    }
+  }
+  
+  return(szum)
+}
+
+
+perReg <- function(X,Y)
+{
+#a2
+
+Sz1 <- Summ(X,2,Y)
+Sz2 <- Summ(X,3)
+Sz3 <- Summ(X,2)
+Sz4 <- Summ(X,1,Y)
+Sz5 <- Summ(X,2)
+Sz6 <- Summ(X,1)
+Sz7 <- Summ(Y,1)
+Sz8 <- Summ(X,1)
+Sz9 <- length(X)
+
+N1 <- Summ(X,4)
+N2 <- Summ(X,3)
+N3 <- Summ(X,2)
+N4 <- Summ(X,3)
+N5 <- Summ(X,2)
+N6 <- Summ(X,1)
+N7 <- Summ(X,2)
+N8 <- Summ(X,1)
+N9 <- length(X)
+
+M1 <- (Sz1 * (Sz5*Sz9)-(Sz6*Sz8)) - (Sz2*(Sz4*Sz9) - (Sz6*Sz7)) + (Sz3 * (Sz4*Sz2) - (Sz5*Sz7)) 
+M2 <- (N1 * (N5*N9)-(N6*N8)) - (N2*(N4*N9) - (N6*N7)) + (N3 * (N4*N2) - (N5*N7)) 
+
+osszega2 <- M1/M2
+
+#a1
+
+Sz1 <- 0
+Sz2 <- 0
+Sz3 <- 0
+Sz4 <- 0
+Sz5 <- 0
+Sz6 <- 0
+Sz7 <- 0
+Sz8 <- 0
+Sz9 <- 0
+N1 <- 0
+N2 <- 0
+N3 <- 0
+N4 <- 0
+N5 <- 0
+N6 <- 0
+N7 <- 0
+N8 <- 0
+N9 <- 0
+
+
+
+
+
+
+
+
+}
