@@ -1,0 +1,18 @@
+Ncalc <- function(k) {
+  szum <- 0
+  for (i in 1:length(k)) {
+    szum <- szum + k[i]
+  }
+  return(szum)
+}
+
+Osszegez <- function(k, p) {
+  szum <- 0
+  for (i in 1:length(k)) {
+    szum <- szum + ((k[i] - Ncalc(k) * p[i])^2) / (Ncalc(k) * p[i])
+  }
+  return(szum)
+}
+
+ k <- c(83,91,122,107,74,123)
+ p <- c((1/6),(1/6),(1/6),(1/6),(1/6),(1/6))
