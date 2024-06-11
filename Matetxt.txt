@@ -1,0 +1,152 @@
+x="in3blk";#neptun kód
+z=charToRaw(iconv(x, "latin1", "UTF-8"))
+for (i in 1:6) v=paste("0x",z,sep="")
+e=strtoi(v)
+ax=e[1];ay=e[2];az=e[3];av=e[4];ss=sum(strtoi(v))+24
+cat("ax=",ax,"\n")
+cat("ay=",ay,"\n")
+cat("az=",az,"\n")
+cat("av=",av,"\n")
+cat("ss=",ss,"\n")
+ar=c( "FB","AAPL","AMZN","GOOG","NFLX","TSLA")
+ai=ss-6*floor(ss/6)
+ev=2022-(ss-10*floor(ss/10))
+cat("ev=",ev,"\n")
+cat("reszveny=",ar[ai+1],"\n")
+
+#1. Feladat
+library(readr)
+data <- read.csv("C:/Users/au087447/Desktop/Zavarkó_Máté_IN3BLK/GOOG.csv")
+
+# Napi változások
+daily_changes <- diff(data$Close)
+
+ggdensity(daily_changes)
+
+#A sűrűség függvény közelítőleg normális eloszlást mutat
+qqPlot(daily_changes)
+
+t_test <- t.test(daily_changes)
+print(t_test)
+
+
+#2. Feladat /a
+set.seed(ss)
+nx=500
+v=matrix(c(ax,abs(ax-ay),abs(ax-ay),ay),2)
+w=chol(v)
+z1=tan(pi*(runif(nx)-0.5))
+z2=tan(pi*(runif(nx)-0.5))*2
+zm=matrix(c(z1,z2),ncol=2)
+zn=10*zm%*%w
+
+print(zn)
+
+#Statisztikai összegzés
+summary(zn)
+
+library(ggpubr)
+ggdensity(zn[,1]) + xlim(-700, 700)
+ggdensity(zn[,2]) + xlim(-700, 700)
+
+#a kapott sűrűség függvény közelítőleg student eloszlásra mutat (harang görbe)
+
+#peremvizsgálat az eloszlás megerősítéséhez:
+cov_zn= cov(zn)
+mean_zn = colMeans(zn)
+
+marginal_1 = list(mean = mean_zn[1], sd = sqrt(cov_zn[1,1]))
+marginal_2 = list(mean = mean_zn[2], sd = sqrt(cov_zn[2,2]))
+print(marginal_1)
+print(marginal_2)
+
+#2. Feladat /b
+A kétdimenziós eloszlás: két változó közötti kapcsolatot (például kovarianciát) ír le. Ez a kapcsolat lehetővé teszi az eloszlás leírását egy bizonyos módon. Az ilyen eloszlások segítenek megérteni, milyen összefüggés lehet a változók között. Egyes esetekben a normál eloszlás jó közelítés lehet, de ez nem mindig igaz. Az eloszlás pontos jellege további elemzést igényelhet, például a korrelációs együttható meghatározásával vagy a marginális eloszlások vizsgálatával.
+
+
+#3. Feladat
+# Feladat paraméterei
+n <- 800
+rho <- 0.6
+sigma1 <- 2
+sigma2 <- 3
+
+#Szórásmátrix
+Sigma <- matrix(c(sigma1^2, rho * sigma1 * sigma2, rho * sigma1 * sigma2, sigma2^2), nrow = 2)
+
+# Exponenciális eloszlású minta generálása két egydimenziós változóra
+exponential_1 <- rexp(n, rate = 1/sigma1)
+exponential_2 <- rexp(n, rate = 1/sigma2)
+
+#Kétdimenziós mátrix
+realizacio <- cbind(exponential_1, exponential_2)
+
+plot(realizacio )
+
+4. Feladat
+set.seed(ss+139)
+
+library(stabledist)
+
+#Stabilis eloszlás generálása
+realizacio <- rstable(n, alpha = 1 + (ax + az) / (ax + ay + az), beta = 0, gamma = 100, delta = 11)
+
+#Realizáció ábrázolása
+par(mfrow=c(2,2))
+
+hist(realizacio, main="Histogram")
+
+plot(density(realizacio), main="Sűrűségfüggvény")
+
+#A sűrűség függvény közelítőleg student eloszlásra valamint normál eloszlásra hasonlít
+
+t_test <- t.test(realizacio)
+
+print(t_test)
+#student eloszlást mutat
+
+
+library(moments)
+
+skewness_value <- skewness(realizacio)
+print(skewness_value)
+
+kurtosis_value <- kurtosis(realizacio)
+print(kurtosis_value)
+
+#A lapultságból és a ferdeségből tudjuk hogy ez nem normál eloszlás
+
+5. Feladat
+library(readr)
+data <- read.csv("C:/Users/au087447/Desktop/Zavarkó_Máté_IN3BLK/GOOG.csv")
+library(car)
+# logreturn létrehozása
+logreturn = c()
+
+# A záró értékek kinyerése
+close <- data$Close
+
+# logreturn értékek számítása
+for (i in 1:length(close)-1) {
+    logreturn[i] = log(close[i+1]/close[i])
+}
+
+logreturn = abs(logreturn)
+
+# Eloszlás
+library(ggpubr)
+ggdensity(logreturn)
+qqPlot(logreturn)
+
+# Khi-négyzet teszt
+chisq.test(logreturn)
+
+ggdensity(logreturn)
+#a sűrűség függvény alapján látszik a poisson eloszlás
+
+
+hist(logreturn, main="Histogram")
+
+t_test <- t.test(daily_changes)
+print(t_test)
+#a görbe 1 p-valueval mutat student eloszlást, de a qq plot alapján látszik hogy ez inkább normális eloszlású lehet
